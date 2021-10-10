@@ -1,9 +1,24 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const Login = () => {
-    const { signInWithGoogle } = useAuth();
+    const { signInWithGoogle, setError, setUser } = useAuth();
+    const location = useLocation();
+    const history = useHistory();
+    const redirectURL = location.state?.from || "/";
+    console.log("came from", );
+
+    const handleGoogleLogin = () => {
+        signInWithGoogle()
+            .then(result => {
+                history.push(redirectURL);
+                setUser(result.user)
+            })
+            .catch(error => {
+                setError(error.message);
+            })
+    }
     return (
         <div className = "App">
             <h2>Login</h2>
@@ -16,7 +31,7 @@ const Login = () => {
             </form>
             <p>New to ema-john? <NavLink to="/register">Register</NavLink></p>
             <div>------or--------</div>
-            <button className= "btn-regular" onClick = {signInWithGoogle}>Google Signin</button>
+            <button className= "btn-regular" onClick = {handleGoogleLogin}>Google Sign in</button>
         </div>
     );
 };
