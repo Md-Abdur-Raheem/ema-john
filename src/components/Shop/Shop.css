@@ -15,3 +15,18 @@
     margin-right: 5px;
     margin-left: 50px;
 }
+.pagination{
+    margin-top: 50px;
+    margin-left: 50%;
+}
+.pagination button{
+    margin: 2px;
+    border: none;
+    padding: 5px 10px;
+}
+.pagination .selected{
+    background-color: goldenrod;
+    outline: none;
+    color: white;
+    
+}

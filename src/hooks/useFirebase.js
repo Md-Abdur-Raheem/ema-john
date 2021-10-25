@@ -8,6 +8,7 @@ initAuthentication();
 const useFirebase = () => {
     const [user, setUser] = useState({});
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
     const auth = getAuth();
 
     const signInWithGoogle = () => {
@@ -26,21 +27,24 @@ const useFirebase = () => {
         signOut(auth)
             .then(() => {
                 setUser({});
-          }).catch((error) => {
+            }).catch((error) => {
                 setError(error.message)
-          });
+            })
+            .finally(
+                setLoading(false)
+        )
     }
     
     useEffect(() => {
        const unsubscribe =  onAuthStateChanged(auth, user => {
             if (user) {
-                console.log('inside state changed', user);
                 setUser(user);
+                setLoading(false);
             }
        });
         return unsubscribe;
     }, [])
     
-    return {signInWithGoogle, signOutFromAccount, user, error, setUser, setError}
+    return {signInWithGoogle, signOutFromAccount, user, error, loading, setUser, setError}
 }
 export default useFirebase;
